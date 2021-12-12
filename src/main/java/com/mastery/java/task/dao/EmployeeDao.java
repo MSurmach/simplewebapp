@@ -1,8 +1,6 @@
 package com.mastery.java.task.dao;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeHasAlreadyExisted;
-import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
 
 import java.util.List;
 
