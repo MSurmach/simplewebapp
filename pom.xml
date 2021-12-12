@@ -47,8 +47,6 @@
             <version>2.0.202</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
     <name>demo</name>
     <description>Practical task</description>
