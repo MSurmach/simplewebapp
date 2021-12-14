@@ -20,32 +20,27 @@ public interface EmployeeService {
      *
      * @param id of the requested employee.
      * @return the instance of {@link Employee}, that matches to id.
-     * @throws {@link EmployeeIsNotFoundException} if any employees don't found with this id.
      */
-    Employee findOneEmployeeById(Long id) throws EmployeeIsNotFoundException;
+    Employee findOneEmployeeById(Long id);
 
     /**
      * Saves the new {@link Employee} to a common storage.
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
-     * @throws EmployeeHasAlreadyExisted if instance of the {@link Employee} fully equals to already existing.
      */
-    void saveNewEmployee(Employee employee) throws EmployeeHasAlreadyExisted;
+    void saveNewEmployee(Employee employee);
 
     /**
      * Updates already existing {@link Employee}
      *
      * @param employee the instance of the {@link Employee} with updated properties.
-     * @param id       of the {@link Employee} instance, that should be updated.
-     * @throws EmployeeIsNotFoundException if any {@link Employee} instances don't found with this id.
      */
-    void updateEmployee(Employee employee, Long id) throws EmployeeIsNotFoundException;
+    void updateEmployee(Employee employee);
 
     /**
      * Deletes the {@link Employee} from a common storage.
      *
      * @param id of the {@link Employee} instance, that should be deleted.
-     * @throws EmployeeIsNotFoundException if any {@link Employee} don't found with this id.
      */
-    void deleteEmployee(Long id) throws EmployeeIsNotFoundException;
+    void deleteEmployee(Long id);
 }
