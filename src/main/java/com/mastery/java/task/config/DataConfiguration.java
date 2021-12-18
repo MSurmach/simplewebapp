@@ -27,11 +27,4 @@ public class DataConfiguration {
         dataSource.setPassword(password);
         return new JdbcTemplate(dataSource);
     }
-
-    @Bean
-    public ObjectMapper jacksonObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
 }

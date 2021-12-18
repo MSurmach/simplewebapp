@@ -7,5 +7,5 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @ComponentScan({"com.mastery.java.task.rest", "com.mastery.java.task.service"})
-public class WebConfig {
+public class WebConfiguration {
 }
