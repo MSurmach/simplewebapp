@@ -26,14 +26,14 @@ public interface EmployeeDao {
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
      */
-    void saveNewEmployee(Employee employee);
+    Employee saveNewEmployee(Employee employee);
 
     /**
      * Updates already existing {@link Employee} in a database
      *
      * @param employee the instance of the {@link Employee} with updated properties.
      */
-    void updateEmployee(Employee employee);
+    Employee updateEmployee(Employee employee);
 
     /**
      * Deletes the {@link Employee} from a database.
