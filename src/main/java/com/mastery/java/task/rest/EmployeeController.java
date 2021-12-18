@@ -1,10 +1,10 @@
 package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +29,8 @@ public class EmployeeController {
      *
      * @return {@link ResponseEntity} - response with HTTP code status and a body that will contain a collection of all employees.
      */
-    @GetMapping(value = "/employees/all")
-    public ResponseEntity<List<Employee>> allEmployers() {
+    @GetMapping(value = "/employees/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Employee>> allEmployees() {
         return new ResponseEntity<>(employeeService.allEmployees(), HttpStatus.OK);
     }
 
@@ -40,29 +40,32 @@ public class EmployeeController {
      * @param id of the requested employee.
      * @return {@link ResponseEntity} - response with HTTP code status and a body that will contain an instance of the requested employee. In case the employee is not found, the response will contain an empty body.
      */
-    @GetMapping(value = "/employees/{id}")
+    @GetMapping(value = "/employees/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> findOneEmployeeById(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
-        } catch (EmployeeIsNotFoundException exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
+    }
+
+    /**
+     * The handler for saving a new employee.
+     *
+     * @param employee a new {@link Employee} instance that needs to be saved
+     * @return {@link ResponseEntity} - response with HTTP code status
+     */
+    @PostMapping(value = "/employees")
+    public ResponseEntity<?> saveNewEmployee(@RequestBody Employee employee) {
+        employeeService.saveNewEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * The handler for updating selected employee data.
      *
-     * @param id of the employee that needs to be updated.
      * @return {@link ResponseEntity} - response with HTTP code status.
      */
-    @PutMapping(value = "/employees/{id}")
-    public ResponseEntity<HttpStatus> updateEmployee(@RequestBody Employee employee, @PathVariable Long id) {
-        try {
-            employeeService.updateEmployee(employee, id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EmployeeIsNotFoundException exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping(value = "/employees")
+    public ResponseEntity<HttpStatus> updateEmployee(@RequestBody Employee employee) {
+        employeeService.updateEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -73,13 +76,7 @@ public class EmployeeController {
      */
     @DeleteMapping(value = "/employees/{id}")
     public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable Long id) {
-        try {
-            employeeService.deleteEmployee(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EmployeeIsNotFoundException exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
