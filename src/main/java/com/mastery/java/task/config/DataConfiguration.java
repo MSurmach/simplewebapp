@@ -1,20 +1,16 @@
 package com.mastery.java.task.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 @PropertySource(value = "classpath:db.properties")
-@ComponentScan({"com.mastery.java.task.dao", "com.mastery.java.task.service"})
-public class RootConfiguration {
+@ComponentScan({"com.mastery.java.task.dao"})
+public class DataConfiguration {
 
     @Value("${dbname}")
     private String databaseName;
