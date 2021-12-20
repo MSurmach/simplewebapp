@@ -1,0 +1,68 @@
+.row {
+    width: 100%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.centered {
+    text-align: center;
+}
+
+.attractive-text {
+    color: darkslategrey;
+    font-size: 40px;
+    padding: 10px;
+}
+
+.small-attractive-text {
+    font-size: 25px;
+    padding: 10px;
+}
+
+.button {
+    width: 150px;
+    background-color: black;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    font-size: 20px;
+}
+
+/*input[type="text"] {
+    min-height: 40px;
+    width: 50px;
+    border: black 2px solid;
+    border-radius: 6px;
+    font-size: 20px;
+}*/
+
+table {
+    width: 100%;
+    font-size: 20px;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+th {
+    background-color: #71acac;
+}
+
+#new-form {
+    width: 40%;
+    text-align: center;
+    background-color: #71acac;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 15px;
+}
