@@ -39,11 +39,32 @@ function findByID(context) {
         type: "GET",
         url: `${context}/employees/${employeeID}`,
         success: function (response) {
-            let view = $("#foundByIdEmployeeView");
+            let view = $('#foundByIdEmployeeView');
+            $('#employee-control-buttons').show();
+            let deleteButton = $('#employee-delete-button');
+            deleteButton.attr('property', response.id);
             view.html("");
             let table = createTableWithHeader();
             table.appendChild(getRowView(response));
             view.append(table);
+        },
+        error: function (xhr) {
+            if (xhr.status === 404) {
+                alert("The provided ID is incorrect");
+                $("#employee_ID").val("");
+            }
+        }
+    });
+}
+
+function deleteEmployee(id, context) {
+    $.ajax({
+        type: "DELETE",
+        url: `${context}/employees/${id}`,
+        success: function () {
+            $('#foundByIdEmployeeView').html('');
+            $('#employee-control-buttons').hide();
+            lookAtAll(context);
         }
     });
 }
