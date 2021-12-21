@@ -20,6 +20,17 @@ public class EmployeeDaoTest {
     private EmbeddedDatabase database;
     private EmployeeDao employeeDao;
     private JdbcTemplate jdbcTemplate;
+    private final Employee testEmployeeInstance;
+
+    {
+        testEmployeeInstance = new Employee(
+                "Kate",
+                "Peterson",
+                Gender.FEMALE,
+                4L,
+                "Secretary",
+                LocalDate.of(1986, 9, 15));
+    }
 
     @Before
     public void init() {
@@ -56,18 +67,11 @@ public class EmployeeDaoTest {
 
     @Test
     public void saveNewEmployee() {
-        Employee newEmployee = new Employee(
-                "Kate",
-                "Peterson",
-                Gender.FEMALE,
-                4L,
-                "Secretary",
-                LocalDate.of(1986, 9, 15));
-        employeeDao.saveNewEmployee(newEmployee);
+        employeeDao.saveNewEmployee(testEmployeeInstance);
         String sqlQueryForMaxId = "SELECT MAX(employee_id) FROM employee";
         long maxId = jdbcTemplate.queryForObject(sqlQueryForMaxId, Long.class);
-        newEmployee.setId(maxId);
-        Assert.assertEquals(newEmployee, employeeDao.findOneEmployeeById(maxId));
+        testEmployeeInstance.setId(maxId);
+        Assert.assertEquals(testEmployeeInstance, employeeDao.findOneEmployeeById(maxId));
     }
 
     @Test
@@ -92,6 +96,17 @@ public class EmployeeDaoTest {
         Long invalidId = 96L;
         employeeDao.deleteEmployee(invalidId);
         Assert.assertEquals(employees.size(), employeeDao.allEmployees().size());
+    }
+
+    @Test
+    public void findEmployeeByAllCredentials() {
+        Employee employee = employeeDao.findOneEmployeeById(1L);
+        Assert.assertNotNull(employeeDao.findEmployeeByAllCredentials(employee));
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void findEmployeeByAllCredentialsIsNotFound() {
+        employeeDao.findEmployeeByAllCredentials(testEmployeeInstance);
     }
 }
 
