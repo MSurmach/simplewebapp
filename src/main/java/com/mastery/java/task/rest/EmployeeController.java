@@ -1,6 +1,8 @@
 package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.exceptions.EmployeeIsAlreadyExisted;
+import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +44,11 @@ public class EmployeeController {
      */
     @GetMapping(value = "/employees/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> findOneEmployeeById(@PathVariable Long id) {
-        return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
+        } catch (EmployeeIsNotFoundException exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -52,9 +58,13 @@ public class EmployeeController {
      * @return {@link ResponseEntity} - response with HTTP code status
      */
     @PostMapping(value = "/employees")
-    public ResponseEntity<?> saveNewEmployee(@RequestBody Employee employee) {
-        employeeService.saveNewEmployee(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<HttpStatus> saveNewEmployee(@RequestBody Employee employee) {
+        try {
+            employeeService.saveNewEmployee(employee);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EmployeeIsAlreadyExisted employeeIsAlreadyExisted) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
