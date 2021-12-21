@@ -22,6 +22,12 @@ public interface EmployeeDao {
     Employee findOneEmployeeById(Long id);
 
     /**
+     * @param employee
+     * @return
+     */
+    Employee findEmployeeByAllCredentials(Employee employee);
+
+    /**
      * Saves the new {@link Employee} to a database.
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
