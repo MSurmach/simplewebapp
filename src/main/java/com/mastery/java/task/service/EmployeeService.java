@@ -1,7 +1,7 @@
 package com.mastery.java.task.service;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeHasAlreadyExisted;
+import com.mastery.java.task.exceptions.EmployeeIsAlreadyExisted;
 import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
 
 import java.util.List;
@@ -21,14 +21,14 @@ public interface EmployeeService {
      * @param id of the requested employee.
      * @return the instance of {@link Employee}, that matches to id.
      */
-    Employee findOneEmployeeById(Long id);
+    Employee findOneEmployeeById(Long id) throws EmployeeIsNotFoundException;
 
     /**
      * Saves the new {@link Employee} to a common storage.
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
      */
-    void saveNewEmployee(Employee employee);
+    void saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted;
 
     /**
      * Updates already existing {@link Employee}
