@@ -39,23 +39,29 @@
     <div class="row centered" id="addNewSection" hidden>
         <form id="new-form" action="javascript:saveNewEmployee('${context}');">
             <label for="firstName" class="small-attractive-text">First name: </label>
-            <input type="text" required name="firstName">
+            <br>
+            <input type="text" name="firstName" required>
             <br>
             <label for="lastName" class="small-attractive-text">Last name: </label>
+            <br>
             <input type="text" required name="lastName">
             <br>
             <label for="departmentId" class="small-attractive-text">Department ID: </label>
+            <br>
             <input type="text" required name="departmentId">
             <br>
             <label for="jobTitle" class="small-attractive-text">Job Title: </label>
+            <br>
             <input type="text" required name="jobTitle">
             <br>
             <label for="dateOfBirth" class="small-attractive-text">Date of
                 birth: </label>
+            <br>
             <input type="date" required name="dateOfBirth">
             <br>
             <label for="gender"
                    class="small-attractive-text">Gender: </label>
+            <br>
             <select name="gender">
                 <option value="MALE">MALE</option>
                 <option value="FEMALE">FEMALE</option>
