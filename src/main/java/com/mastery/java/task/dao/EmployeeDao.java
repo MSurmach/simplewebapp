@@ -22,15 +22,18 @@ public interface EmployeeDao {
     Employee findOneEmployeeById(Long id);
 
     /**
-     * @param employee
-     * @return
+     * Finds the one {@link Employee} instance in a database by the full credentials (all instance fields).
+     *
+     * @param employee the instance of the {@link Employee}, that should be found
+     * @return {@link Employee} instance, if it is found.
      */
     Employee findEmployeeByAllCredentials(Employee employee);
 
     /**
      * Saves the new {@link Employee} to a database.
      *
-     * @param employee - the instance of the {@link Employee}, that should be saved.
+     * @param employee the instance of the {@link Employee}, that should be saved.
+     * @return {@link Employee} instance, if it is saved.
      */
     Employee saveNewEmployee(Employee employee);
 
@@ -38,6 +41,7 @@ public interface EmployeeDao {
      * Updates already existing {@link Employee} in a database
      *
      * @param employee the instance of the {@link Employee} with updated properties.
+     * @return {@link Employee} instance, if it is updated.
      */
     Employee updateEmployee(Employee employee);
 
@@ -47,5 +51,4 @@ public interface EmployeeDao {
      * @param id of the {@link Employee} instance, that should be deleted.
      */
     void deleteEmployee(Long id);
-
 }

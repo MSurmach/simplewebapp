@@ -21,6 +21,11 @@ public class EmployeeController {
 
     private EmployeeService employeeService;
 
+    /**
+     * Setter for autowiring dependency.
+     *
+     * @param employeeService
+     */
     @Autowired
     public void setEmployeeService(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -55,7 +60,7 @@ public class EmployeeController {
      * The handler for saving a new employee.
      *
      * @param employee a new {@link Employee} instance that needs to be saved
-     * @return {@link ResponseEntity} - response with HTTP code status
+     * @return {@link ResponseEntity} response with HTTP code status, that will be 200 ("OK") if an employee is saved, or 400 ("BAD_REQUEST"), if the employee is not saved.
      */
     @PostMapping(value = "/employees")
     public ResponseEntity<HttpStatus> saveNewEmployee(@RequestBody Employee employee) {
@@ -70,7 +75,8 @@ public class EmployeeController {
     /**
      * The handler for updating selected employee data.
      *
-     * @return {@link ResponseEntity} - response with HTTP code status.
+     * @param employee a new {@link Employee} instance that needs to be updated.
+     * @return {@link ResponseEntity} - response with HTTP code status, that will be 200 ("OK") if an employee is updated, or 404 ("NOT_FOUND"), if the employee is not found for the update.
      */
     @PutMapping(value = "/employees")
     public ResponseEntity<HttpStatus> updateEmployee(@RequestBody Employee employee) {

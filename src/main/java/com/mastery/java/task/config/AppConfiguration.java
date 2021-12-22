@@ -2,7 +2,10 @@ package com.mastery.java.task.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
+/**
+ * Main configuration class.
+ * Configures full context, powered by Spring Framework.
+ */
 public class AppConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override

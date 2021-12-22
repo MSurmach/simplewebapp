@@ -3,6 +3,9 @@ package com.mastery.java.task.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Simple blueprint for creating Employee instances, which later on will be added into a database.
+ */
 public class Employee {
     private Long id;
     private String firstName;
@@ -13,7 +16,6 @@ public class Employee {
     private LocalDate dateOfBirth;
 
     public Employee() {
-
     }
 
     public Employee(String firstName, String lastName, Gender gender, Long departmentId, String jobTitle, LocalDate dateOfBirth) {
