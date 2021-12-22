@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,7 +29,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -93,6 +95,7 @@ public class EmployeeControllerTest {
     @Test
     public void saveNewEmployee() throws Exception {
         when(employeeDaoMock.saveNewEmployee(testEmployeeInstance)).thenReturn(testEmployeeInstance);
+        when(employeeDaoMock.findEmployeeByAllCredentials(testEmployeeInstance)).thenThrow(mock(DataAccessException.class));
         mockMvc.perform(post("/employees/")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(testEmployeeInstance))

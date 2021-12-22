@@ -74,8 +74,12 @@ public class EmployeeController {
      */
     @PutMapping(value = "/employees")
     public ResponseEntity<HttpStatus> updateEmployee(@RequestBody Employee employee) {
-        employeeService.updateEmployee(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            employeeService.updateEmployee(employee);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EmployeeIsNotFoundException exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
