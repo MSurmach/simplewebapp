@@ -26,6 +26,20 @@ Simple web application, that realizes an employee database with "CRUD" operation
    - Optional: you can fill up db by this [filler script](https://github.com/MSurmach/simplewebapp/blob/master/src/main/resources/db/migration/V1.2_Fill_data.sql);
    - The configuration for the database is located under "src/main/resources/db.properties" path.
 2. Launch application by "mvn tomcat7:run" (_maven plugin_) command in the source directory. 
+
+### Visual part of the application (_Screenshots_)
+1. Root view:  
+   ![root view](readme_img/rootView.png)  
+2. Find by id section:
+   ![find by id view](readme_img/findByIDView.png)
+3. See all section:  
+   ![see all view](readme_img/seeAllView.png)  
+3. Add new section:  
+   ![add new view](readme_img/addNewView.png)
+   
+   
+   
+
         
         
   
