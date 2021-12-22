@@ -17,7 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeDao employeeDao;
 
     @Autowired
-    public void setEmployeeDao(EmployeeDao employeeDao) {
+    public EmployeeServiceImpl(EmployeeDao employeeDao) {
         this.employeeDao = employeeDao;
     }
 
@@ -36,18 +36,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted {
+    public Employee saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted {
+        Employee saved;
         try {
             employeeDao.findEmployeeByAllCredentials(employee);
             throw new EmployeeIsAlreadyExisted("The provided employee is already saved");
         } catch (DataAccessException exception) {
-            employeeDao.saveNewEmployee(employee);
+            saved = employeeDao.saveNewEmployee(employee);
         }
+        return saved;
     }
 
     @Override
-    public void updateEmployee(Employee employee) {
-        employeeDao.updateEmployee(employee);
+    public void updateEmployee(Employee employee) throws EmployeeIsNotFoundException {
+        try {
+            employeeDao.updateEmployee(employee);
+        } catch (DataAccessException exception) {
+            throw new EmployeeIsNotFoundException("Unable to update, because of not found");
+        }
     }
 
     @Override

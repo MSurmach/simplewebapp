@@ -28,14 +28,14 @@ public interface EmployeeService {
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
      */
-    void saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted;
+    Employee saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted;
 
     /**
      * Updates already existing {@link Employee}
      *
      * @param employee the instance of the {@link Employee} with updated properties.
      */
-    void updateEmployee(Employee employee);
+    void updateEmployee(Employee employee) throws EmployeeIsNotFoundException;
 
     /**
      * Deletes the {@link Employee} from a common storage.
