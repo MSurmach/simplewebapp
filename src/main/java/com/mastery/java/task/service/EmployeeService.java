@@ -35,10 +35,11 @@ public interface EmployeeService {
     /**
      * Updates already existing {@link Employee}
      *
+     * @param id       of the {@link Employee} instance, that should be updated.
      * @param employee the instance of the {@link Employee} with updated properties.
      * @throws EmployeeIsNotFoundException see {@link EmployeeIsNotFoundException} description.
      */
-    void updateEmployee(Employee employee) throws EmployeeIsNotFoundException;
+    void updateEmployee(Long id, Employee employee) throws EmployeeIsNotFoundException;
 
     /**
      * Deletes the {@link Employee} from a common storage.

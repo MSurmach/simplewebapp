@@ -40,10 +40,11 @@ public interface EmployeeDao {
     /**
      * Updates already existing {@link Employee} in a database
      *
+     * @param id of the {@link Employee} instance, that should be updated.
      * @param employee the instance of the {@link Employee} with updated properties.
      * @return {@link Employee} instance, if it is updated.
      */
-    Employee updateEmployee(Employee employee);
+    Employee updateEmployee(Long id, Employee employee);
 
     /**
      * Deletes the {@link Employee} from a database.

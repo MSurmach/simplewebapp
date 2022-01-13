@@ -4,20 +4,15 @@ import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class EmployeeDAOImpl implements EmployeeDao {
@@ -68,7 +63,7 @@ public class EmployeeDAOImpl implements EmployeeDao {
     }
 
     @Override
-    public Employee updateEmployee(Employee employee) {
+    public Employee updateEmployee(Long id, Employee employee) {
         String sqlQuery = String.format("UPDATE employee SET " +
                 "first_name = :firstName," +
                 "last_name = :lastName," +
@@ -76,7 +71,7 @@ public class EmployeeDAOImpl implements EmployeeDao {
                 "job_title = :jobTitle," +
                 "gender = :gender," +
                 "date_of_birth = :dateOfBirth" +
-                " WHERE employee_id = %s", employee.getId());
+                " WHERE employee_id = %s", id);
         namedParameterJdbcTemplate.update(sqlQuery, getNamedMapSource(employee));
         return employee;
     }

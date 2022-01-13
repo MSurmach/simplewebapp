@@ -48,9 +48,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Employee employee) throws EmployeeIsNotFoundException {
+    public void updateEmployee(Long id, Employee employee) throws EmployeeIsNotFoundException {
         try {
-            employeeDao.updateEmployee(employee);
+            employeeDao.updateEmployee(id, employee);
         } catch (DataAccessException exception) {
             throw new EmployeeIsNotFoundException("Unable to update, because of not found");
         }
