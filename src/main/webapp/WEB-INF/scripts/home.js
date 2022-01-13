@@ -10,7 +10,7 @@ function lookAtAll(context) {
     openSection("#allSection");
     $.ajax({
         type: "GET",
-        url: `${context}/employees/all`,
+        url: `${context}/employees`,
         success: function (employees) {
             let view = $("#allEmployeesView");
             view.html("");
