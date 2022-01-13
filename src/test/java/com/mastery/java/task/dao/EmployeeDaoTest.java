@@ -17,10 +17,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class EmployeeDaoTest {
+    private final Employee testEmployeeInstance;
     private EmbeddedDatabase database;
     private EmployeeDao employeeDao;
     private JdbcTemplate jdbcTemplate;
-    private final Employee testEmployeeInstance;
 
     {
         testEmployeeInstance = new Employee(
@@ -76,10 +76,11 @@ public class EmployeeDaoTest {
 
     @Test
     public void updateEmployee() {
-        Employee employee = employeeDao.findOneEmployeeById(1L);
+        Long employeeId = 1L;
+        Employee employee = employeeDao.findOneEmployeeById(employeeId);
         String newJobTitle = "Software developer";
         employee.setJobTitle(newJobTitle);
-        employeeDao.updateEmployee(employee);
+        employeeDao.updateEmployee(employeeId, employee);
         Assert.assertEquals(newJobTitle, employeeDao.findOneEmployeeById(1L).getJobTitle());
     }
 

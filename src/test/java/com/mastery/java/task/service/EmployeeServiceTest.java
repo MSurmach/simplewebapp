@@ -19,9 +19,9 @@ import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
 
+    private final Employee testEmployeeInstance;
     private EmployeeDao employeeDaoMock;
     private EmployeeService employeeService;
-    private final Employee testEmployeeInstance;
 
     {
         testEmployeeInstance = new Employee(
@@ -71,8 +71,8 @@ public class EmployeeServiceTest {
 
     @Test(expected = EmployeeIsNotFoundException.class)
     public void updateEmployeeNotExisted() throws Exception {
-        when(employeeDaoMock.updateEmployee(testEmployeeInstance)).thenThrow(mock(DataAccessException.class));
-        employeeService.updateEmployee(testEmployeeInstance);
+        when(employeeDaoMock.updateEmployee(testEmployeeInstance.getId(), testEmployeeInstance)).thenThrow(mock(DataAccessException.class));
+        employeeService.updateEmployee(testEmployeeInstance.getId(), testEmployeeInstance);
     }
 
 }

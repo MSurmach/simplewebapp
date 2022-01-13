@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,9 +26,9 @@ import org.springframework.web.context.WebApplicationContext;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -40,8 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class EmployeeControllerTest {
 
-    private MockMvc mockMvc;
     private final Employee testEmployeeInstance;
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
@@ -74,7 +73,7 @@ public class EmployeeControllerTest {
     @Test
     public void allEmployees() throws Exception {
         when(employeeDaoMock.allEmployees()).thenReturn(Collections.singletonList(testEmployeeInstance));
-        mockMvc.perform(get("/employees/all"))
+        mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print());
@@ -106,10 +105,11 @@ public class EmployeeControllerTest {
 
     @Test
     public void updateEmployee() throws Exception {
+        Long testId = testEmployeeInstance.getId();
         Employee updatedEmployee = testEmployeeInstance;
         updatedEmployee.setJobTitle("Lead software architect");
-        when(employeeDaoMock.updateEmployee(testEmployeeInstance)).thenReturn(updatedEmployee);
-        mockMvc.perform(put("/employees")
+        when(employeeDaoMock.updateEmployee(testId, testEmployeeInstance)).thenReturn(updatedEmployee);
+        mockMvc.perform(put("/employees/{testId}", testId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(testEmployeeInstance))
                 .characterEncoding(StandardCharsets.UTF_8))
