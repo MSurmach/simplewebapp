@@ -17,6 +17,7 @@ import java.util.List;
  * The controller receives HTTP requests and transfers them to the appropriate handler to process requests.
  */
 @Controller
+@RequestMapping("/employees")
 public class EmployeeController {
 
     private EmployeeService employeeService;
@@ -36,7 +37,7 @@ public class EmployeeController {
      *
      * @return {@link ResponseEntity} - response with HTTP code status and a body that will contain a collection of all employees.
      */
-    @GetMapping(value = "/employees/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> allEmployees() {
         return new ResponseEntity<>(employeeService.allEmployees(), HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class EmployeeController {
      * @param id of the requested employee.
      * @return {@link ResponseEntity} - response with HTTP code status and a body that will contain an instance of the requested employee. In case the employee is not found, the response will contain an empty body.
      */
-    @GetMapping(value = "/employees/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> findOneEmployeeById(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
@@ -62,7 +63,7 @@ public class EmployeeController {
      * @param employee a new {@link Employee} instance that needs to be saved
      * @return {@link ResponseEntity} response with HTTP code status, that will be 200 ("OK") if an employee is saved, or 400 ("BAD_REQUEST"), if the employee is not saved.
      */
-    @PostMapping(value = "/employees")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> saveNewEmployee(@RequestBody Employee employee) {
         try {
             employeeService.saveNewEmployee(employee);
@@ -75,13 +76,14 @@ public class EmployeeController {
     /**
      * The handler for updating selected employee data.
      *
+     * @param id       of the {@link Employee} instance, that should be updated.
      * @param employee a new {@link Employee} instance that needs to be updated.
      * @return {@link ResponseEntity} - response with HTTP code status, that will be 200 ("OK") if an employee is updated, or 404 ("NOT_FOUND"), if the employee is not found for the update.
      */
-    @PutMapping(value = "/employees")
-    public ResponseEntity<HttpStatus> updateEmployee(@RequestBody Employee employee) {
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         try {
-            employeeService.updateEmployee(employee);
+            employeeService.updateEmployee(id, employee);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EmployeeIsNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -94,7 +96,7 @@ public class EmployeeController {
      * @param id of the employee that needs to be deleted.
      * @return {@link ResponseEntity} - response with HTTP code status.
      */
-    @DeleteMapping(value = "/employees/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.OK);
