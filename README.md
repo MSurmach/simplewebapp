@@ -38,10 +38,10 @@ Simple web application, that realizes an employee database with "CRUD" operation
    ![add new view](readme_img/addNewView.png)
 
 ### Optional: also available operations upon employees (REST API):
- - GET  **/employees/all**   (_return all available employees from the database_);  
+ - GET  **/employees**   (_return all available employees from the database_);  
  - GET **/employees/{id}**   (return employee by ID);
  - POST **/employees** (saves a new employee, object transfers in the request body as JSON);
- - PUT **/employees** (updates an existed employee, object transfers in the request body as JSON);
+ - PUT **/employees/{id}** (updates an existed employee by ID, object transfers in the request body as JSON);
  - DELETE **/employees/{id}** (deletes an employee by ID)/
    
    
