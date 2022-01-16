@@ -6,14 +6,10 @@ Simple web application, that realizes an employee database with "CRUD" operation
 ### The technologies are used in the app:
 - Backend part ("Main app"):
     - Java 8;
-    - Spring Framework (_Web MVC_);
-    - Spring Test, JUnit 4, Mockito (_for tests_);
-    - Spring JDBC (_as link to a database_);
-    - Jackson (_as object serializer/deserializer to JSON_);
-    - Servlets API;
-    - Tomcat 7 embedded (_as a servlet container_) 
+    - Spring Boot (WEB, JDBC, TEST Starters)
+    - Tomcat 9 embedded (_as a servlet container_) 
 - Frontend part ("UI"):
-    - HTML with JSP (a bit);
+    - HTML (a bit);
     - Javascript (JQuery, AJAX) (_for the DOM manipulating and requests to the backend part_).
 - Database ("DB"):
     - PostgreSQL (_"production"_);
