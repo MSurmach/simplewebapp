@@ -1,10 +1,8 @@
 package com.mastery.java.task.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,18 +12,14 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * Spring configuration for the web context of the application.
  */
 @Configuration
-@EnableWebMvc
-@ComponentScan({"com.mastery.java.task.rest", "com.mastery.java.task.service"})
 public class WebConfiguration implements WebMvcConfigurer {
 
-    /**
-     * @return
-     */
+
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/pages/");
-        viewResolver.setSuffix(".jsp");
+        viewResolver.setPrefix("/pages/");
+        viewResolver.setSuffix(".html");
         return viewResolver;
     }
 
@@ -46,8 +40,8 @@ public class WebConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/styles/**").addResourceLocations("/WEB-INF/styles/");
-        registry.addResourceHandler("/scripts/**").addResourceLocations("/WEB-INF/scripts/");
+        registry.addResourceHandler("/styles/**").addResourceLocations("classpath:/static/styles/");
+        registry.addResourceHandler("/scripts/**").addResourceLocations("classpath:/static/scripts/");
     }
 }
 
