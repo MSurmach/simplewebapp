@@ -1,23 +1,16 @@
 package com.mastery.java.task.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mastery.java.task.config.JsonConfiguration;
-import com.mastery.java.task.config.MockedDaoConfig;
-import com.mastery.java.task.config.WebConfiguration;
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.Gender;
 import com.mastery.java.task.service.EmployeeService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,9 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {JsonConfiguration.class, MockedDaoConfig.class, WebConfiguration.class})
-@WebAppConfiguration
+@SpringBootTest
 public class EmployeeControllerTest {
 
     private final Employee testEmployeeInstance;
@@ -59,7 +52,7 @@ public class EmployeeControllerTest {
         testEmployeeInstance.setId(1L);
     }
 
-    @Before
+    @BeforeAll
     public void init() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
@@ -67,7 +60,7 @@ public class EmployeeControllerTest {
     @Test
     public void setEmployeeService() {
         EmployeeService employeeService = (EmployeeService) webApplicationContext.getBean(EmployeeService.class);
-        Assert.assertNotNull(employeeService);
+        assertNotNull(employeeService);
     }
 
     @Test
@@ -88,7 +81,7 @@ public class EmployeeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andReturn();
-        Assert.assertEquals(objectMapper.writeValueAsString(testEmployeeInstance), result.getResponse().getContentAsString());
+        assertEquals(objectMapper.writeValueAsString(testEmployeeInstance), result.getResponse().getContentAsString());
     }
 
     @Test
