@@ -1,3 +1,5 @@
+const SERVER_CONTEXT = "/simplewebapp";
+
 function lookAtFindByIdSection() {
     openSection("#findByIdSection");
 }
@@ -6,11 +8,11 @@ function lookAtAddNewSection() {
     openSection("#addNewSection");
 }
 
-function lookAtAll(context) {
+function lookAtAll() {
     openSection("#allSection");
     $.ajax({
         type: "GET",
-        url: `${context}/employees`,
+        url: `${SERVER_CONTEXT}/employees`,
         success: function (employees) {
             let view = $("#allEmployeesView");
             view.html("");
@@ -37,7 +39,7 @@ function findByID(context) {
     let employeeID = $("#employee_ID").val();
     $.ajax({
         type: "GET",
-        url: `${context}/employees/${employeeID}`,
+        url: `${SERVER_CONTEXT}/employees/${employeeID}`,
         success: function (response) {
             let view = $('#foundByIdEmployeeView');
             $('#employee-control-buttons').show();
@@ -60,7 +62,7 @@ function findByID(context) {
 function deleteEmployee(id, context) {
     $.ajax({
         type: "DELETE",
-        url: `${context}/employees/${id}`,
+        url: `${SERVER_CONTEXT}/employees/${id}`,
         success: function () {
             $('#foundByIdEmployeeView').html('');
             $('#employee-control-buttons').hide();
@@ -73,7 +75,7 @@ function saveNewEmployee(context) {
     let formData = new FormData($("#new-form")[0]);
     $.ajax({
         type: "POST",
-        url: `${context}/employees`,
+        url: `${SERVER_CONTEXT}/employees`,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(Object.fromEntries(formData)),
         success: function () {

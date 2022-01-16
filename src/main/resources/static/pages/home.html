@@ -1,14 +1,12 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>Employees</title>
 </head>
-<link href="${pageContext.request.contextPath}/styles/style.css" rel="stylesheet" type="text/css">
-<script src="${pageContext.request.contextPath}/scripts/home.js"></script>
+<link href="/simplewebapp/styles/style.css" rel="stylesheet" type="text/css">
+<script src="/simplewebapp/scripts/home.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body>
-<c:set var="context" value="${pageContext.request.contextPath}"></c:set>
 <div class="main">
     <div class="row centered">
         <span class="attractive-text">Employees Database</span>
@@ -16,7 +14,7 @@
     <hr>
     <div class="row centered">
         <input type="button" class="button" value="Find by ID" onclick="lookAtFindByIdSection()">
-        <input type="button" class="button" value="See all" onclick="lookAtAll('${context}')">
+        <input type="button" class="button" value="See all" onclick="lookAtAll()">
         <input type="button" class="button" value="Add new..." onclick="lookAtAddNewSection()">
     </div>
     <hr>
@@ -24,12 +22,12 @@
         <span class="small-attractive-text">To find out about the employee, please type in his id: </span>
         <input type="text" class="centered" id="employee_ID">
         <input type="button" class="button" value="Find"
-               onclick="findByID('${context}')">
+               onclick="findByID()">
         <div id="foundByIdEmployeeView">
         </div>
         <div id="employee-control-buttons" class="row centered" hidden>
             <input type="button" class="button" id="employee-delete-button" property="" value="Delete"
-                   onclick="deleteEmployee(this.getAttribute('property'), '${context}')">
+                   onclick="deleteEmployee(this.getAttribute('property'))">
         </div>
     </div>
     <div class="row centered" id="allSection" hidden>
@@ -37,7 +35,7 @@
         </div>
     </div>
     <div class="row centered" id="addNewSection" hidden>
-        <form id="new-form" action="javascript:saveNewEmployee('${context}');">
+        <form id="new-form" action="javascript:saveNewEmployee();">
             <label for="firstName" class="small-attractive-text">First name: </label>
             <br>
             <input type="text" name="firstName" required>
