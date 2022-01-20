@@ -1,5 +1,6 @@
 package com.mastery.java.task.config;
 
+import com.mastery.java.task.annotation.Frontend;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * Spring configuration for the web context of the application.
  */
 @Configuration
+@Frontend
 public class WebConfiguration implements WebMvcConfigurer {
 
 
