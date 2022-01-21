@@ -1,21 +1,29 @@
 package com.mastery.java.task.dto;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Simple blueprint for creating Employee instances, which later on will be added into a database.
  */
+@Entity
+@Table(name = "employee", schema = "public")
 public class Employee {
+    @Id
+    @Column(name = "employee_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column
     private String firstName;
     private String lastName;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private Long departmentId;
     private String jobTitle;
     private LocalDate dateOfBirth;
 
-    public Employee() {
+    protected Employee() {
     }
 
     public Employee(String firstName, String lastName, Gender gender, Long departmentId, String jobTitle, LocalDate dateOfBirth) {
