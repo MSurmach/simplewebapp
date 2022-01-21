@@ -23,13 +23,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> allEmployees() {
-        return employeeDao.allEmployees();
+        return employeeDao.findAll();
     }
 
     @Override
     public Employee findOneEmployeeById(Long id) throws EmployeeIsNotFoundException {
         try {
-            return employeeDao.findOneEmployeeById(id);
+            return employeeDao.findById(id).get();
         } catch (DataAccessException exception) {
             throw new EmployeeIsNotFoundException("The employee is not found");
         }
@@ -39,25 +39,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted {
         Employee saved;
         try {
-            employeeDao.findEmployeeByAllCredentials(employee);
+            employeeDao.save(employee);
             throw new EmployeeIsAlreadyExisted("The provided employee is already saved");
         } catch (DataAccessException exception) {
-            saved = employeeDao.saveNewEmployee(employee);
+            saved = employeeDao.save(employee);
         }
         return saved;
     }
 
     @Override
     public void updateEmployee(Long id, Employee employee) throws EmployeeIsNotFoundException {
-        try {
-            employeeDao.updateEmployee(id, employee);
-        } catch (DataAccessException exception) {
-            throw new EmployeeIsNotFoundException("Unable to update, because of not found");
-        }
+        Employee toUpdate = findOneEmployeeById(id);
+        toUpdate.setFirstName(employee.getFirstName());
+        toUpdate.setLastName(employee.getLastName());
+        toUpdate.setDepartmentId(employee.getDepartmentId());
+        toUpdate.setDateOfBirth(employee.getDateOfBirth());
+        toUpdate.setGender(employee.getGender());
+        toUpdate.setJobTitle(employee.getJobTitle());
+        employeeDao.save(toUpdate);
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        employeeDao.deleteEmployee(id);
+        employeeDao.deleteById(id);
     }
 }
