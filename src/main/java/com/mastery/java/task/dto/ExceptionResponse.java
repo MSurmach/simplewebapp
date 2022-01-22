@@ -8,12 +8,8 @@ public class ExceptionResponse {
     private String message;
     private int code;
     private String codeStatus;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime time;
-
-    public ExceptionResponse() {
-
-    }
 
     public String getMessage() {
         return message;
