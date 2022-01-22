@@ -2,14 +2,11 @@ package com.mastery.java.task.service.impl;
 
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.ResourceIsAlreadyExistedException;
 import com.mastery.java.task.exceptions.ResourceIsNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -36,19 +33,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee saveNewEmployee(Employee employee) throws ResourceIsAlreadyExistedException {
-        Employee saved;
-        try {
-            employeeDao.save(employee);
-            throw new ResourceIsAlreadyExistedException("The provided employee is already saved");
-        } catch (EntityNotFoundException exception) {
-            saved = employeeDao.save(employee);
-        }
-        return saved;
+    public List<Employee> findEmployeeByFirstName(String firstName) {
+        return employeeDao.findByFirstName(firstName);
     }
 
     @Override
-    public void updateEmployee(Long id, Employee employee) throws ResourceIsNotFoundException {
+    public List<Employee> findEmployeeByLastName(String lastName) {
+        return employeeDao.findByLastName(lastName);
+    }
+
+    @Override
+    public List<Employee> findEmployeeByFirstNameAndLastName(String firstName, String lastName) {
+        return employeeDao.findByFirstNameAndLastName(firstName, lastName);
+    }
+
+    @Override
+    public Employee saveNewEmployee(Employee employee) {
+        return employeeDao.save(employee);
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) throws ResourceIsNotFoundException {
         Employee toUpdate = findOneEmployeeById(id);
         toUpdate.setFirstName(employee.getFirstName());
         toUpdate.setLastName(employee.getLastName());
@@ -56,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         toUpdate.setDateOfBirth(employee.getDateOfBirth());
         toUpdate.setGender(employee.getGender());
         toUpdate.setJobTitle(employee.getJobTitle());
-        employeeDao.save(toUpdate);
+        return employeeDao.save(toUpdate);
     }
 
     @Override
