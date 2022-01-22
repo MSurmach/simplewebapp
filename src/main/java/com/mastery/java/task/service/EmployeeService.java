@@ -1,8 +1,8 @@
 package com.mastery.java.task.service;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeIsAlreadyExisted;
-import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
+import com.mastery.java.task.exceptions.ResourceIsAlreadyExistedException;
+import com.mastery.java.task.exceptions.ResourceIsNotFoundException;
 
 import java.util.List;
 
@@ -20,26 +20,26 @@ public interface EmployeeService {
      *
      * @param id of the requested employee.
      * @return the instance of {@link Employee}, that matches to id.
-     * @throws EmployeeIsNotFoundException see {@link EmployeeIsNotFoundException} description.
+     * @throws ResourceIsNotFoundException see {@link ResourceIsNotFoundException} description.
      */
-    Employee findOneEmployeeById(Long id) throws EmployeeIsNotFoundException;
+    Employee findOneEmployeeById(Long id) throws ResourceIsNotFoundException;
 
     /**
      * Saves the new {@link Employee} to a common storage.
      *
      * @param employee - the instance of the {@link Employee}, that should be saved.
-     * @throws EmployeeIsAlreadyExisted see {@link EmployeeIsAlreadyExisted} description.
+     * @throws ResourceIsAlreadyExistedException see {@link ResourceIsAlreadyExistedException} description.
      */
-    Employee saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted;
+    Employee saveNewEmployee(Employee employee) throws ResourceIsAlreadyExistedException;
 
     /**
      * Updates already existing {@link Employee}
      *
      * @param id       of the {@link Employee} instance, that should be updated.
      * @param employee the instance of the {@link Employee} with updated properties.
-     * @throws EmployeeIsNotFoundException see {@link EmployeeIsNotFoundException} description.
+     * @throws ResourceIsNotFoundException see {@link ResourceIsNotFoundException} description.
      */
-    void updateEmployee(Long id, Employee employee) throws EmployeeIsNotFoundException;
+    void updateEmployee(Long id, Employee employee) throws ResourceIsNotFoundException;
 
     /**
      * Deletes the {@link Employee} from a common storage.

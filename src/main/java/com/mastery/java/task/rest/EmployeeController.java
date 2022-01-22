@@ -1,8 +1,8 @@
 package com.mastery.java.task.rest;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeIsAlreadyExisted;
-import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
+import com.mastery.java.task.exceptions.ResourceIsAlreadyExistedException;
+import com.mastery.java.task.exceptions.ResourceIsNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * The controller receives HTTP requests and transfers them to the appropriate handler to process requests.
  */
-@Controller
+@RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
@@ -42,19 +42,9 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.allEmployees(), HttpStatus.OK);
     }
 
-    /**
-     * The handler for getting only one employee by his id.
-     *
-     * @param id of the requested employee.
-     * @return {@link ResponseEntity} - response with HTTP code status and a body that will contain an instance of the requested employee. In case the employee is not found, the response will contain an empty body.
-     */
-    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> findOneEmployeeById(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(employeeService.findOneEmployeeById(id), HttpStatus.OK);
-        } catch (EmployeeIsNotFoundException exception) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Employee findOneEmployeeById(@PathVariable Long id) throws ResourceIsNotFoundException {
+        return employeeService.findOneEmployeeById(id);
     }
 
     /**
@@ -68,7 +58,7 @@ public class EmployeeController {
         try {
             employeeService.saveNewEmployee(employee);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EmployeeIsAlreadyExisted employeeIsAlreadyExisted) {
+        } catch (ResourceIsAlreadyExistedException resourceIsAlreadyExistedException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -85,7 +75,7 @@ public class EmployeeController {
         try {
             employeeService.updateEmployee(id, employee);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EmployeeIsNotFoundException exception) {
+        } catch (ResourceIsNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

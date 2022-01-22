@@ -2,13 +2,14 @@ package com.mastery.java.task.service.impl;
 
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.EmployeeIsAlreadyExisted;
-import com.mastery.java.task.exceptions.EmployeeIsNotFoundException;
+import com.mastery.java.task.exceptions.ResourceIsAlreadyExistedException;
+import com.mastery.java.task.exceptions.ResourceIsNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -27,28 +28,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findOneEmployeeById(Long id) throws EmployeeIsNotFoundException {
-        try {
-            return employeeDao.findById(id).get();
-        } catch (DataAccessException exception) {
-            throw new EmployeeIsNotFoundException("The employee is not found");
-        }
+    public Employee findOneEmployeeById(Long id) throws ResourceIsNotFoundException {
+        return employeeDao.findById(id).orElseThrow(() -> {
+            String msg = String.format("Employee with id = %d is not found", id);
+            return new ResourceIsNotFoundException(msg);
+        });
     }
 
     @Override
-    public Employee saveNewEmployee(Employee employee) throws EmployeeIsAlreadyExisted {
+    public Employee saveNewEmployee(Employee employee) throws ResourceIsAlreadyExistedException {
         Employee saved;
         try {
             employeeDao.save(employee);
-            throw new EmployeeIsAlreadyExisted("The provided employee is already saved");
-        } catch (DataAccessException exception) {
+            throw new ResourceIsAlreadyExistedException("The provided employee is already saved");
+        } catch (EntityNotFoundException exception) {
             saved = employeeDao.save(employee);
         }
         return saved;
     }
 
     @Override
-    public void updateEmployee(Long id, Employee employee) throws EmployeeIsNotFoundException {
+    public void updateEmployee(Long id, Employee employee) throws ResourceIsNotFoundException {
         Employee toUpdate = findOneEmployeeById(id);
         toUpdate.setFirstName(employee.getFirstName());
         toUpdate.setLastName(employee.getLastName());
