@@ -1,26 +1,21 @@
 package com.mastery.java.task.service;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.ResourceIsAlreadyExistedException;
-import com.mastery.java.task.exceptions.ResourceIsNotFoundException;
+import com.mastery.java.task.exceptions.MyServiceIsNotFoundException;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    List<Employee> allEmployees();
+    List<Employee> findAllEmployees() throws MyServiceIsNotFoundException;
 
-    Employee findOneEmployeeById(Long id) throws ResourceIsNotFoundException;
+    Employee findEmployeeById(Long id) throws MyServiceIsNotFoundException;
 
-    List<Employee> findEmployeeByFirstName(String firstName);
+    List<Employee> findEmployeesByName(String firstName, String lastName) throws MyServiceIsNotFoundException;
 
-    List<Employee> findEmployeeByLastName(String lastName);
+    Employee saveEmployee(Employee employee);
 
-    List<Employee> findEmployeeByFirstNameAndLastName(String firstName, String lastName);
+    Employee updateEmployee(Long id, Employee employee);
 
-    Employee saveNewEmployee(Employee employee);
-
-    Employee updateEmployee(Long id, Employee employee) throws ResourceIsNotFoundException;
-
-    void deleteEmployee(Long id);
+    void deleteEmployee(Long id) throws MyServiceIsNotFoundException;
 }

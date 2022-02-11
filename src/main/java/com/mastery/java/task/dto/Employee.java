@@ -1,6 +1,10 @@
 package com.mastery.java.task.dto;
 
+import com.mastery.java.task.annotation.IsAdult;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,23 +16,36 @@ import java.util.Objects;
 public class Employee {
     @Id
     @Column(name = "employee_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String firstName;
-    private String lastName;
+    @NotEmpty(message = "The firstname can't be empty or null!")
+    @Column(name = "first_name")
+    private String firstname;
+    @NotEmpty(message = "The lastname can't be empty or null!")
+    @Column(name = "last_name")
+    private String lastname;
     @Enumerated(EnumType.STRING)
+    @NotEmpty (message = "The employee must have gender!")
     private Gender gender;
+    @Column(name = "department_id")
     private Long departmentId;
+    @Column(name = "job_title")
     private String jobTitle;
+    @IsAdult
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     protected Employee() {
     }
 
-    public Employee(String firstName, String lastName, Gender gender, Long departmentId, String jobTitle, LocalDate dateOfBirth) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    public Employee(String firstname, String lastname, Gender gender, Long departmentId, String jobTitle, LocalDate dateOfBirth) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.gender = gender;
         this.departmentId = departmentId;
         this.jobTitle = jobTitle;
@@ -43,20 +60,20 @@ public class Employee {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstName) {
+        this.firstname = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastName) {
+        this.lastname = lastName;
     }
 
     public Gender getGender() {
@@ -95,8 +112,8 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", gender=" + gender +
                 ", departmentId=" + departmentId +
                 ", jobTitle='" + jobTitle + '\'' +
@@ -109,6 +126,6 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && gender == employee.gender && Objects.equals(departmentId, employee.departmentId) && Objects.equals(jobTitle, employee.jobTitle) && Objects.equals(dateOfBirth, employee.dateOfBirth);
+        return Objects.equals(id, employee.id) && Objects.equals(firstname, employee.firstname) && Objects.equals(lastname, employee.lastname) && gender == employee.gender && Objects.equals(departmentId, employee.departmentId) && Objects.equals(jobTitle, employee.jobTitle) && Objects.equals(dateOfBirth, employee.dateOfBirth);
     }
 }

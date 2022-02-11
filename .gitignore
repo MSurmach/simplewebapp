@@ -1,5 +1,5 @@
 # Log file
-*.log
+.logs
 
 # Idea packages
 .idea/*
