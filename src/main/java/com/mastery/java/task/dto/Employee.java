@@ -3,6 +3,7 @@ package com.mastery.java.task.dto;
 import com.mastery.java.task.annotation.IsAdult;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -18,19 +19,25 @@ public class Employee {
     @Column(name = "employee_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "The firstname can't be empty or null!")
+
+    @NotEmpty
     @Column(name = "first_name")
     private String firstname;
-    @NotEmpty(message = "The lastname can't be empty or null!")
+
+    @NotEmpty
     @Column(name = "last_name")
     private String lastname;
+
     @Enumerated(EnumType.STRING)
-    @NotEmpty (message = "The employee must have gender!")
+    @NotNull
     private Gender gender;
+
     @Column(name = "department_id")
     private Long departmentId;
+
     @Column(name = "job_title")
     private String jobTitle;
+
     @IsAdult
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
