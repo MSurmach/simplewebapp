@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Logger;
 import com.mastery.java.task.dto.SimpleWebAppExceptionResponse;
 import com.mastery.java.task.exceptions.MyServiceNotFoundException;
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

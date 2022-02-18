@@ -63,20 +63,12 @@ public class EmployeeController {
                                     schema = @Schema(implementation = Employee.class)))))
 
     @GetMapping
-    public List<Employee> findEmployeesByName(@RequestParam(required = false) String firstname,
-                                              @RequestParam(required = false) String lastname) throws MyServiceNotFoundException {
+    public List<Employee> findEmployees(@RequestParam(required = false) String firstname,
+                                        @RequestParam(required = false) String lastname) throws MyServiceNotFoundException {
         LOG.info("IN: firstname = {}, lastname = {}", firstname, lastname);
-        if (firstname == null && lastname == null) return findAllEmployees();
         List<Employee> found = employeeService.findEmployeesByName(firstname, lastname);
         LOG.info("OUT: number of found employees = {}", found.size());
         return found;
-    }
-
-    private List<Employee> findAllEmployees() throws MyServiceNotFoundException {
-        LOG.info("IN: no params");
-        List<Employee> allEmployees = employeeService.findAllEmployees();
-        LOG.info("OUT: all employees list, with size = {}", allEmployees.size());
-        return allEmployees;
     }
 
     @Operation(
