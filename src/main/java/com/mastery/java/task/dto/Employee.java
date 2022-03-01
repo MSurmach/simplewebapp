@@ -3,7 +3,6 @@ package com.mastery.java.task.dto;
 import com.mastery.java.task.annotation.IsAdult;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;

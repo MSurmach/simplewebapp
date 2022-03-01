@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+    <changeSet id="1" author="Maxim Surmach">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="employee"/>
+            </not>
+        </preConditions>
+        <createTable tableName="employee" schemaName="public">
+            <column name="employee_id" type="int" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="department_id" type="tinyint"/>
+            <column name="job_title" type="varchar"/>
+            <column name="gender" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="Maxim Surmach">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="employee"/>
+        </preConditions>
+        <insert tableName="employee">
+            <column name="first_name" value="Maxim"/>
+            <column name="last_name" value="Surmach"/>
+            <column name="department_id" value="1"/>
+            <column name="job_title" value="Java Developer"/>
+            <column name="gender" value="MALE"/>
+            <column name="date_of_birth" value="1994-08-17"/>
+        </insert>
+        <insert tableName="employee">
+            <column name="first_name" value="Jack"/>
+            <column name="last_name" value="Daniels"/>
+            <column name="department_id" value="2"/>
+            <column name="job_title" value="Showman"/>
+            <column name="gender" value="MALE"/>
+            <column name="date_of_birth" value="1960-05-25"/>
+        </insert>
+        <insert tableName="employee">
+            <column name="first_name" value="Matti"/>
+            <column name="last_name" value="Karttunen"/>
+            <column name="department_id" value="3"/>
+            <column name="job_title" value="Secretary"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="date_of_birth" value="1999-01-24"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

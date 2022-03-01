@@ -2,7 +2,7 @@ package com.mastery.java.task.rest;
 
 import ch.qos.logback.classic.Logger;
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exceptions.MyServiceNotFoundException;
+import com.mastery.java.task.dto.SimpleWebAppExceptionResponse;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,11 +63,11 @@ public class EmployeeController {
                                     schema = @Schema(implementation = Employee.class)))))
 
     @GetMapping
-    public List<Employee> findEmployees(@RequestParam(required = false) String firstname,
-                                        @RequestParam(required = false) String lastname) throws MyServiceNotFoundException {
-        LOG.info("IN: firstname = {}, lastname = {}", firstname, lastname);
+    public List<Employee> findEmployees(@RequestParam(required = false, defaultValue = "") String firstname,
+                                        @RequestParam(required = false, defaultValue = "") String lastname) {
+        LOG.info("IN findEmployees: firstname = {}, lastname = {}", firstname, lastname);
         List<Employee> found = employeeService.findEmployeesByName(firstname, lastname);
-        LOG.info("OUT: number of found employees = {}", found.size());
+        LOG.info("OUT findEmployees: number of found employees = {}", found.size());
         return found;
     }
 
@@ -81,36 +81,63 @@ public class EmployeeController {
                             in = PATH
                     )
             },
-            responses = @ApiResponse(
-                    responseCode = "200",
-                    description = "Success! The employee with provided id",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Employee.class))))
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Success! The employee with provided id",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(
+                            responseCode = "400", description = "Bad request. Violating the constraints",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))),
+                    @ApiResponse(
+                            responseCode = "404", description = "Employee not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
+            })
 
     @GetMapping(value = "/{id}")
-    public Employee findEmployeeById(@PathVariable @Positive Long id) throws MyServiceNotFoundException {
-        LOG.info("IN: id = {}", id);
+    public Employee findEmployeeById(@PathVariable @Positive Long id) {
+        LOG.info("IN findEmployeeById: id = {}", id);
         Employee found = employeeService.findEmployeeById(id);
-        LOG.info("OUT: detected employee = {} ", found);
+        LOG.info("OUT findEmployeeById: detected employee = {} ", found);
         return found;
     }
 
     @Operation(
             summary = "Saves new employee",
-            responses = @ApiResponse(
-                    responseCode = "201",
-                    description = "The saved employee",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Employee.class))))
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201", description = "The saved employee",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(
+                            responseCode = "400", description = "Bad request. Violating the constraints",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
+            })
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee saveEmployee(@RequestBody @Valid Employee employee) {
-        LOG.info("IN: employee = {}", employee);
+        LOG.info("IN saveEmployee: employee = {}", employee);
         Employee saved = employeeService.saveEmployee(employee);
-        LOG.info("OUT: saved employee = {}", employee);
+        LOG.info("OUT saveEmployee: saved employee = {}", saved);
         return saved;
     }
 
@@ -123,18 +150,34 @@ public class EmployeeController {
                             in = PATH
                     )
             },
-            responses = @ApiResponse(
-                    responseCode = "200",
-                    description = "Success! The updated employee",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Employee.class))))
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Success! The updated employee",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Employee.class))),
+                    @ApiResponse(
+                            responseCode = "400", description = "Bad request. Violating the constraints",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))),
+                    @ApiResponse(
+                            responseCode = "404", description = "Employee not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
+            })
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Employee updateEmployee(@PathVariable @Positive Long id, @RequestBody @Valid Employee employee) throws MyServiceNotFoundException {
-        LOG.info("IN: update params -> id = {}, employee  = {}", id, employee);
+    public Employee updateEmployee(@PathVariable @Positive Long id, @RequestBody @Valid Employee employee) {
+        LOG.info("IN updateEmployee: update params -> id = {}, employee  = {}", id, employee);
         Employee updated = employeeService.updateEmployee(id, employee);
-        LOG.info("OUT: updated employee = {}", updated);
+        LOG.info("OUT updateEmployee: updated employee = {}", updated);
         return updated;
     }
 
@@ -148,15 +191,30 @@ public class EmployeeController {
                             in = PATH
                     )
             },
-            responses = @ApiResponse(
-                    responseCode = "204",
-                    description = "The employee is deleted"))
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "The employee is deleted"),
+                    @ApiResponse(
+                            responseCode = "400", description = "Bad request. Violating the constraints",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "404", description = "Employee not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
+            }
+    )
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployee(@PathVariable @Positive Long id) throws MyServiceNotFoundException {
-        LOG.info("IN: delete params -> id = {}", id);
+    public void deleteEmployee(@PathVariable @Positive Long id) {
+        LOG.info("IN deleteEmployee: delete params -> id = {}", id);
         employeeService.deleteEmployee(id);
-        LOG.info("OUT: no content, the deleting is successful");
+        LOG.info("OUT deleteEmployee: no content, the deleting is successful");
     }
 }

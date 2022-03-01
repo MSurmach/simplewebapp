@@ -1,13 +1,12 @@
-package com.mastery.java.task.dao;
+package com.mastery.java.task.repository;
 
 import com.mastery.java.task.dto.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 
-public interface EmployeeDao extends JpaRepository<Employee, Long> {
-    List<Employee> findByFirstnameContainsAndLastnameContains(@Nullable String firstname, @Nullable String lastname);
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    List<Employee> findByFirstnameContainsAndLastnameContainsAllIgnoreCase(String firstname, String lastname);
 
     /*@Query("SELECT e FROM Employee e " +
             "WHERE (:firstname IS NULL OR e.firstname LIKE %:firstname%)" +

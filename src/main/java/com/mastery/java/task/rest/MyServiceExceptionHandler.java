@@ -3,10 +3,6 @@ package com.mastery.java.task.rest;
 import ch.qos.logback.classic.Logger;
 import com.mastery.java.task.dto.SimpleWebAppExceptionResponse;
 import com.mastery.java.task.exceptions.MyServiceNotFoundException;
-import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,26 +20,12 @@ public class MyServiceExceptionHandler {
 
     private static final Logger LOG = (Logger) LoggerFactory.getLogger(MyServiceExceptionHandler.class);
 
-    @ApiResponse(
-            responseCode = "404",
-            description = "Employee not found",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
-
     @ExceptionHandler(MyServiceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public SimpleWebAppExceptionResponse handleNotFoundException(HttpServletRequest request, MyServiceNotFoundException exception) {
         logExceptionWithStackTrace(request, exception);
         return new SimpleWebAppExceptionResponse(HttpStatus.NOT_FOUND, exception);
     }
-
-    @ApiResponse(
-            responseCode = "400",
-            description = "Bad request. Violating the constraints",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = SimpleWebAppExceptionResponse.class)))
 
     @ExceptionHandler({ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -57,11 +39,10 @@ public class MyServiceExceptionHandler {
         return violationResponses;
     }
 
-    @Hidden
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public SimpleWebAppExceptionResponse handleAnyUncaughtException(HttpServletRequest request, Throwable exception) {
-        String message = "Uncaught exception. You need to see logs";
+        String message = "Internal server error";
         SimpleWebAppExceptionResponse exceptionResponse = new SimpleWebAppExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, message);
         logExceptionWithStackTrace(request, exception);
         return exceptionResponse;
