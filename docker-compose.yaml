@@ -3,19 +3,19 @@ services:
   db:
     image: postgres:14.2-alpine
     container_name: db
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=surmach
       - POSTGRES_PASSWORD=1111
       - POSTGRES_DB=employeedb
   activemq:
     image: rmohr/activemq:5.14.0-alpine
     container_name: activemq
-    ports:
-      - 61616:61616
+    expose:
+      - 61616
   simplewebapp:
-    image: simplewebapp-postgres:latest
+    image: simplewebapp:latest
     build: .
     container_name: simplewebapp
     ports:
@@ -23,3 +23,7 @@ services:
     depends_on:
       - db
       - activemq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/employeedb
+      - APP_ACTIVEMQ_BROKER-URL=tcp://activemq:61616
+
