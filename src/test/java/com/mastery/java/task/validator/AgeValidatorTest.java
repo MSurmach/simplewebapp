@@ -1,15 +1,13 @@
 package com.mastery.java.task.validator;
 
-import org.junit.Test;
-
-import java.time.LocalDateTime;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class AgeValidatorTest {
 
     @Test
     public void isValid() {
-        LocalDateTime today = LocalDateTime.now();
-        System.out.println(today);
+
     }
 
 }

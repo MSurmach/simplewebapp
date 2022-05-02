@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SimpleWebAppExceptionResponse {
     private String message;
@@ -64,5 +65,18 @@ public class SimpleWebAppExceptionResponse {
 
     public void setHttpStatus(HttpStatus httpStatus) {
         this.httpStatus = httpStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleWebAppExceptionResponse that = (SimpleWebAppExceptionResponse) o;
+        return code == that.code && Objects.equals(message, that.message) && httpStatus == that.httpStatus && Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(message, code, httpStatus, time);
     }
 }

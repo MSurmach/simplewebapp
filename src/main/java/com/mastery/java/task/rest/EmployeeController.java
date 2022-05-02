@@ -3,6 +3,7 @@ package com.mastery.java.task.rest;
 import ch.qos.logback.classic.Logger;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.SimpleWebAppExceptionResponse;
+import com.mastery.java.task.exceptions.MyServiceNotFoundException;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
@@ -35,8 +37,7 @@ public class EmployeeController {
 
     private EmployeeService employeeService;
 
-    @Autowired
-    public void setEmployeeService(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -67,6 +68,10 @@ public class EmployeeController {
                                         @RequestParam(required = false, defaultValue = "") String lastname) {
         LOG.info("IN findEmployees: firstname = {}, lastname = {}", firstname, lastname);
         List<Employee> found = employeeService.findEmployeesByName(firstname, lastname);
+        if (found.isEmpty()) {
+            String message = String.format("Employees with {firstname = %s, lastname = %s} is not found", firstname, lastname);
+            throw new MyServiceNotFoundException(message);
+        }
         LOG.info("OUT findEmployees: number of found employees = {}", found.size());
         return found;
     }
@@ -107,7 +112,10 @@ public class EmployeeController {
     @GetMapping(value = "/{id}")
     public Employee findEmployeeById(@PathVariable @Positive Long id) {
         LOG.info("IN findEmployeeById: id = {}", id);
-        Employee found = employeeService.findEmployeeById(id);
+        Employee found = employeeService.findEmployeeById(id).orElseThrow(() -> {
+            String message = String.format("Employee with {id = %d} is not found", id);
+            return new MyServiceNotFoundException(message);
+        });
         LOG.info("OUT findEmployeeById: detected employee = {} ", found);
         return found;
     }
@@ -176,7 +184,10 @@ public class EmployeeController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee updateEmployee(@PathVariable @Positive Long id, @RequestBody @Valid Employee employee) {
         LOG.info("IN updateEmployee: update params -> id = {}, employee  = {}", id, employee);
-        Employee updated = employeeService.updateEmployee(id, employee);
+        Employee updated = employeeService.updateEmployee(id, employee).orElseThrow(() -> {
+            String message = String.format("Employee with {id = %d} is not updated, because it's not found", id);
+            return new MyServiceNotFoundException(message);
+        });
         LOG.info("OUT updateEmployee: updated employee = {}", updated);
         return updated;
     }
@@ -214,7 +225,10 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable @Positive Long id) {
         LOG.info("IN deleteEmployee: delete params -> id = {}", id);
-        employeeService.deleteEmployee(id);
+        if (!employeeService.deleteEmployee(id)) {
+            String message = String.format("Employee with {id = %d} is not deleted, because it's not found", id);
+            throw new MyServiceNotFoundException(message);
+        }
         LOG.info("OUT deleteEmployee: no content, the deleting is successful");
     }
 }

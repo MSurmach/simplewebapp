@@ -58,6 +58,16 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Employee(Employee that) {
+        this.id = that.id;
+        this.firstname = that.firstname;
+        this.lastname = that.lastname;
+        this.gender = that.gender;
+        this.departmentId = that.departmentId;
+        this.jobTitle = that.jobTitle;
+        this.dateOfBirth = that.dateOfBirth;
+    }
+
     public Long getId() {
         return id;
     }
