@@ -5,6 +5,8 @@ import com.mastery.java.task.dto.SimpleWebAppExceptionResponse;
 import com.mastery.java.task.exceptions.MyServiceNotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,6 +16,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class MyServiceExceptionHandler {
@@ -27,16 +30,26 @@ public class MyServiceExceptionHandler {
         return new SimpleWebAppExceptionResponse(HttpStatus.NOT_FOUND, exception);
     }
 
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public List<SimpleWebAppExceptionResponse> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
+        logExceptionWithStackTrace(request, exception);
+        return exception.getBindingResult().getFieldErrors().
+                stream().map(fieldError -> {
+                    return new SimpleWebAppExceptionResponse(HttpStatus.BAD_REQUEST, fieldError.getDefaultMessage());
+                }).collect(Collectors.toList());
+
+    }
+
+
     @ExceptionHandler({ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<SimpleWebAppExceptionResponse> handleConstraintViolations(HttpServletRequest request, ConstraintViolationException exception) {
         logExceptionWithStackTrace(request, exception);
-        List<SimpleWebAppExceptionResponse> violationResponses = new ArrayList<>();
-        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
-            SimpleWebAppExceptionResponse exceptionResponse = new SimpleWebAppExceptionResponse(HttpStatus.BAD_REQUEST, violation.getMessage());
-            violationResponses.add(exceptionResponse);
-        }
-        return violationResponses;
+        return exception.getConstraintViolations()
+                .stream().map(constraintViolation -> {
+                    return new SimpleWebAppExceptionResponse(HttpStatus.BAD_REQUEST, constraintViolation.getMessage());
+                }).collect(Collectors.toList());
     }
 
     @ExceptionHandler(Throwable.class)

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = AgeValidator.class)
 
-public @interface IsAdult {
+public @interface Adult {
 
     String message() default "Constraint violation. Age is less than 18 years!";
 
