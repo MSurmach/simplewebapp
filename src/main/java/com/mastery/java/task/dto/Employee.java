@@ -41,6 +41,10 @@ public class Employee {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @OneToOne
+    @JoinColumn(name = "passport_id")
+    private Passport passport;
+
     protected Employee() {
     }
 
@@ -122,6 +126,14 @@ public class Employee {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
     }
 
     @Override

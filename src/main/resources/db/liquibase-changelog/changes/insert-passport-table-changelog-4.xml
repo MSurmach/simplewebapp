@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="4" author="maximsurmach@gmail.com">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="employee"/>
+        </preConditions>
+        <insert tableName="passport">
+            <column name="passport_id" value="123456789PB7"/>
+            <column name="serial_number" value="KH12345678"/>
+            <column name="start_date" value="2015-08-17"/>
+            <column name="end_date" value="2025-08-17"/>
+        </insert>
+        <insert tableName="passport">
+            <column name="passport_id" value="671234589PB7"/>
+            <column name="serial_number" value="KH12563478"/>
+            <column name="start_date" value="2017-01-25"/>
+            <column name="end_date" value="2027-01-25"/>
+        </insert>
+        <insert tableName="passport">
+            <column name="passport_id" value="34567128PB79"/>
+            <column name="serial_number" value="KH63412578"/>
+            <column name="start_date" value="2017-03-25"/>
+            <column name="end_date" value="2027-03-25"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

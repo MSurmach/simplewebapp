@@ -94,6 +94,7 @@ class EmployeeControllerTest {
                 andReturn();
         String actualResponseBody = getResponseBodyAsString(mvcResult);
         String expectedResponseBody = objectMapper.writeValueAsString(employeeList);
+        System.out.println(expectedResponseBody);
         assertResponseBodyAsStringEquality(expectedResponseBody, actualResponseBody);
     }
 
