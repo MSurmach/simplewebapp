@@ -1,17 +1,21 @@
 package com.mastery.java.task.repository;
 
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.dto.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.time.LocalDate;
+import javax.sql.DataSource;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class EmployeeRepositoryTest {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -19,27 +23,19 @@ class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private final Employee testEmployeeInstance;
+    @Test
+    void injectedComponentsAreNotNull() {
+        assertThat(dataSource).isNotNull();
+    }
 
-    {
-        testEmployeeInstance = new Employee(
-                "Kate",
-                "Peterson",
-                Gender.FEMALE,
-                4L,
-                "Secretary",
-                LocalDate.of(1986, 9, 15));
+    @Test
+    void getEmployeesFromTheDB() {
+        List<Employee> all = employeeRepository.findAll();
+        assertThat(all.size()).isGreaterThan(0);
     }
 
     @Test
     void findByFirstnameContainsAndLastnameContainsAllIgnoreCase_onlyWithNameTest() {
-        entityManager.persist(testEmployeeInstance);
-        entityManager.flush();
-        final String firstName = "ka";
-        final String lastName = "son";
-        List<Employee> foundEmployees = employeeRepository.findByFirstnameContainsAndLastnameContainsAllIgnoreCase(firstName, lastName);
-        System.out.println();
-        System.out.println(foundEmployees.get(0).toString());
-        System.out.println();
+
     }
 }
